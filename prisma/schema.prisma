@@ -1,0 +1,50 @@
+// Prisma schema — personal website (SQLite for easy local development)
+// Two models: Project (portfolio) and Message (guestbook / contact).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  tags        String // comma-separated labels (SQLite has no scalar lists)
+  githubLink  String?
+  liveLink    String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Post {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  title          String
+  excerpt        String
+  content        String
+  accent         String   @default("iris")
+  tags           String // comma-separated labels (SQLite has no scalar lists)
+  readingMinutes Int      @default(5)
+  featured       Boolean  @default(false)
+  publishedAt    DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([publishedAt])
+}

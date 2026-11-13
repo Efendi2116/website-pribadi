@@ -1,0 +1,8 @@
+import { isAdmin } from "@/lib/auth";
+
+export async function GET() {
+  return Response.json(
+    { authenticated: await isAdmin() },
+    { headers: { "Cache-Control": "no-store" } },
+  );
+}
